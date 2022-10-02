@@ -1,14 +1,14 @@
 <template>
-  <div class="admin-container">
-
+  <div>
+    <h3>index page</h3>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Admin'
+  name: 'User_Index'
 }
 </script>
 
-<style>
+<style lang="less" scoped>
 </style>

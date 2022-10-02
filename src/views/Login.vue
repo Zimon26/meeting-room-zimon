@@ -56,9 +56,10 @@ export default {
       userType: '',
       nameLabelChoice: ['用户ID', '管理员ID'],
       nameLabel: '用户ID',
+      // 这个也是重置后的输入框值，简单起见先直接写
       loginForm: {
-        id: '',
-        password: ''
+        id: 'admin',
+        password: '123456'
       },
       loginFormRules: {
         id: [{ required: true, message: 'ID不能为空', trigger: 'blur' }],
