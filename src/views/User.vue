@@ -51,7 +51,7 @@
             <!-- <i class="el-icon-menu"></i> -->
             菜单
           </div>
-          <el-menu background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router>
+          <el-menu background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router default-active="index">
             <el-menu-item index="index">
               <i class="el-icon-menu"></i>
               <span slot="title">首页</span>
@@ -93,6 +93,7 @@ export default {
     .el-header {
       height: 20%;
       background-color: #605ca8;
+      display: flex;
       .title-div {
         display: inline-block;
         position: relative;
@@ -115,6 +116,7 @@ export default {
         }
       }
       .function-bar {
+        flex: 1;
         display: inline-block;
         // margin-left: 200px;
         .left-function-icons {
@@ -124,11 +126,13 @@ export default {
         }
         .right-function-icons {
           float: right;
+          margin: 18px 0;
+          margin-right: 20px;
           i {
             font-size: 20px;
             color: #eee;
             margin: 0 15px;
-            transform: translate(1540px, -20px);
+            // transform: translate(1540px, -20px);
           }
         }
       }

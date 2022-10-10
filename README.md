@@ -1,19 +1,8 @@
 # meeting_manage_zimon
 
-## Project setup
+## Project detail
+
 ```
-npm install
+This is my first front-end project and also my own test project for vue learning
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
