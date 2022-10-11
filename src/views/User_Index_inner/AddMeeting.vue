@@ -10,7 +10,7 @@
       <el-form-item label="会议预计时长" prop="meetingDuration" label-width="100px">
         <el-input></el-input>
       </el-form-item> -->
-      <el-form-item label="活动时间" label-width="100px">
+      <el-form-item label="会议开始时间" label-width="100px">
         <el-col :span="6">
           <el-form-item prop="meetingTimeStart">
             <el-date-picker type="date" placeholder="选择日期" v-model="addMeetingForm.meetingDay" style="width: 100%;"></el-date-picker>
@@ -24,18 +24,24 @@
           </el-form-item>
         </el-col>
       </el-form-item>
-      <el-form-item label="会议预计时长" prop="meetingDuration" label-width="100px">
-        <el-input></el-input>
+      <el-form-item label="会议预计时长" label-width="100px">
+        <el-input-number v-model="addMeetingForm.meetingDuration" :min="1" :max="10" label="会议持续时间"></el-input-number>
+        <span> * 0.5小时</span>
+        <span> 合计 {{0.5*addMeetingForm.meetingDuration}} 小时</span>
+      </el-form-item>
+      <el-form-item label="会议室ID" label-width="100px">
+        <el-select v-model="roomChoice" placeholder="请选择">
+          <el-option v-for="item in roomInfo" :key="item.id" :label="item.id" :value="item.id"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="会议发起人" prop="meetingHolder" label-width="100px">
         <el-input></el-input>
       </el-form-item>
       <el-form-item label="会议室申请人" prop="meetingAsker" label-width="100px">
-        <el-input></el-input>
+        <el-input>
+        </el-input>
       </el-form-item>
-      <el-form-item label="会议室ID" prop="roomID" label-width="100px">
-        <el-input></el-input>
-      </el-form-item>
+
       <el-form-item>
         <el-button class="one" type="primary" @click="submitForm('addMeetingFormRef')">添加会议</el-button>
         <el-button class="two" type="info" @click="quitAddMeeting">取消</el-button>
@@ -57,13 +63,20 @@ export default {
         meeingHolder: '',
         roomAsker: '',
         roomID: 0
-      }
+      },
+      roomInfo: [
+        { id: 201, occupied: false },
+        { id: 202, occupied: false },
+        { id: 203, occupied: false }
+      ],
+      roomChoice: ''
     }
   },
   methods: {
     submitForm(formRef) {
       // 验证表单上传服务器
       // this.$ref[formRef].validate(valid => {})
+      // 发送添加会议的数据
       this.$emit('workSectionDone', false)
     },
     quitAddMeeting() {
@@ -80,6 +93,7 @@ export default {
   // height: 500px;
   margin-left: 10px;
   border-radius: 5px;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
   padding: 10px 20px;
   background-color: burlywood;
   .el-form-item {
@@ -93,6 +107,14 @@ export default {
     // }
     .el-input {
       width: 60%;
+      margin-left: 50px;
+    }
+    .el-input-number {
+      width: 30%;
+      margin-left: 50px;
+    }
+    .el-select {
+      width: 30%;
       margin-left: 50px;
     }
     .el-button {

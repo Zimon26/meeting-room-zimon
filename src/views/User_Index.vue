@@ -73,16 +73,18 @@ export default {
     addMeetingClick() {
       this.workSectionChoice = AddMeeting
       this.workSectionOn = true
-      console.log('fine')
     },
     configMeetingClick() {
       this.workSectionChoice = ConfigMeeting
+      this.workSectionOn = true
     },
     searchMeetingClick() {
       this.workSectionChoice = SearchMeeting
+      this.workSectionOn = true
     },
     meetingRecordClick() {
       this.workSectionChoice = MeetingRecord
+      this.workSectionOn = true
     },
     workSectionDoneHandler(e) {
       this.workSectionOn = e
