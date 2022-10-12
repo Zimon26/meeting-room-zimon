@@ -14,7 +14,7 @@
         </p>
       </div>
     </div>
-    <h3>工作面板</h3>
+    <h3>工作面板{{operation}}</h3>
     <div v-if="!workSectionOn">
       <div class="work-section">
         <div class="work-section-card first" @click="addMeetingClick">
@@ -32,7 +32,7 @@
         <div class="work-section-card" @click="searchMeetingClick">
           <div class="work-section-content">
             <img src="@/assets/icon-search.png" alt="">
-            <p>查找会议</p>
+            <p>查询会议</p>
           </div>
         </div>
         <div class="work-section-card" @click="meetingRecordClick">
@@ -59,6 +59,7 @@ export default {
   name: 'User_Index',
   data() {
     return {
+      operation: '',
       meetingInfo: [
         { id: 100, time: '2022-10-6', title: '综合设计', holder: 'Zimon' },
         { id: 101, time: '2022-10-6', title: '综合设计', holder: 'Zimon' },
@@ -72,22 +73,27 @@ export default {
     // 负责点击功能面板的四个跳转
     addMeetingClick() {
       this.workSectionChoice = AddMeeting
+      this.operation = ' > 添加会议'
       this.workSectionOn = true
     },
     configMeetingClick() {
       this.workSectionChoice = ConfigMeeting
+      this.operation = ' > 修改会议'
       this.workSectionOn = true
     },
     searchMeetingClick() {
       this.workSectionChoice = SearchMeeting
+      this.operation = ' > 查询会议'
       this.workSectionOn = true
     },
     meetingRecordClick() {
       this.workSectionChoice = MeetingRecord
+      this.operation = ' > 会议记录'
       this.workSectionOn = true
     },
     workSectionDoneHandler(e) {
       this.workSectionOn = e
+      this.operation = ''
     }
   }
 }

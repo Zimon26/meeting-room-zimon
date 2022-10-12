@@ -11,6 +11,7 @@
             <i class="el-icon-message"></i>
             <i class="el-icon-bell"></i>
             <i class="el-icon-s-flag"></i>
+            <el-button type="danger" @click="quitLogin">退出登录</el-button>
           </div>
         </div>
       </el-header>
@@ -74,7 +75,16 @@
 
 <script>
 export default {
-  name: 'User'
+  name: 'User',
+  data() {
+    return {}
+  },
+  methods: {
+    quitLogin() {
+      // 清除token
+      this.$router.replace('/login')
+    }
+  }
 }
 </script>
 
@@ -128,6 +138,9 @@ export default {
           float: right;
           margin: 18px 0;
           margin-right: 20px;
+          .el-button {
+            padding: 5px;
+          }
           i {
             font-size: 20px;
             color: #eee;

@@ -40,6 +40,11 @@ export default {
       },
       // 这个地方应该是后端返回的可供选择的会议数据
       room_All: [{ roomID: 101 }, { roomID: 102 }, { roomID: 103 }, { roomID: 104 }],
+      // rules: {
+      //   meetingDay: [
+      // 并不是必须输入会议室ID和会议日期才能搜
+      //   ]
+      // },
       searchDone: false,
       // 假数据代替
       retMeetingInfo: [
@@ -69,11 +74,15 @@ export default {
   },
   methods: {
     meetingChoiceDone() {
-      // 向后端发送用户的查询条件，返回结果展示到表格
+      // 用户在会议室号和会议时间必须选了一个
+      if (!this.searchMeetingForm.meetingDay && !this.searchMeetingForm.roomID) {
+        return this.$message.error('请至少选择一个查询条件')
+      }
+      // 向后端发送用户的查询条件，修改retMeetingInfo的值
       this.searchDone = true
     },
     clearAll() {
-      this.searchMeetingForm.meetingDay = ''
+      this.searchMeetingForm.meetingDay = null
       this.searchMeetingForm.roomID = ''
     },
     quit() {

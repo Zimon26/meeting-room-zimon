@@ -1,8 +1,8 @@
 <template>
   <div>
-    <el-form class="meeting-choice" v-if="meetingChoiceOn">
-      <el-form-item>
-        <el-select v-model="meetingChoice" placeholder="请选择要修改的会议">
+    <el-form v-if="meetingChoiceOn" ref="meetingChoiceFormRef" class="meeting-choice" :model="meetingChoiceForm" :rules="rulesChoice">
+      <el-form-item prop="meetingChoice">
+        <el-select v-model="meetingChoiceForm.meetingChoice" placeholder="请选择要修改的会议">
           <el-option v-for="item in userMeetings" :key="item.meetingID" :label="`${item.meetingTitle} ${item.meetingDay} ${item.meetingTime}`" :value="item.meetingID"></el-option>
         </el-select>
       </el-form-item>
@@ -14,9 +14,9 @@
 
     <!-- 要修改的会议已经选择完毕 -->
 
-    <el-form class="config-meeting" v-else ref="ConfigMeetingFormRef" :model="configMeetingForm" label-position="left">
-      <el-form-item label="会议主题" prop="meetingTitle" label-width="100px">
-        <el-input></el-input>
+    <el-form v-else class="config-meeting" ref="configMeetingFormRef" :model="configMeetingForm" label-position="left" :rules="rules">
+      <el-form-item label="会议主题" prop="meetingTitle" label-width="110px">
+        <el-input v-model="configMeetingForm.meetingTitle" placeholder="请输入会议名称"></el-input>
       </el-form-item>
       <!-- <el-form-item label="会议开始时间" prop="meetingTime" label-width="100px">
         <el-input></el-input>
@@ -24,40 +24,40 @@
       <el-form-item label="会议预计时长" prop="meetingDuration" label-width="100px">
         <el-input></el-input>
       </el-form-item> -->
-      <el-form-item label="会议开始时间" label-width="100px">
+      <el-form-item label="会议开始时间" label-width="110px" prop="meetingDay">
         <el-col :span="6">
-          <el-form-item prop="meetingTimeStart">
+          <el-form-item class="inner" prop="meetingDay">
             <el-date-picker type="date" placeholder="选择日期" v-model="configMeetingForm.meetingDay" style="width: 100%;"></el-date-picker>
           </el-form-item>
         </el-col>
         <!-- <el-col class="separate" :span="2">-</el-col> -->
         <el-col :span="1"></el-col>
         <el-col :span="6">
-          <el-form-item prop="meetingTimeEnd">
+          <el-form-item class="inner" prop="meetingTime">
             <el-time-picker placeholder="选择时间" v-model="configMeetingForm.meetingTime" style="width: 100%;"></el-time-picker>
           </el-form-item>
         </el-col>
       </el-form-item>
-      <el-form-item label="会议预计时长" label-width="100px">
-        <el-input-number v-model="configMeetingForm.meetingDuration" :min="1" :max="10" label="会议持续时间"></el-input-number>
+      <el-form-item label="会议预计时长" label-width="110px" prop="meetingDuration">
+        <el-input-number v-model="configMeetingForm.meetingDuration" :min="1" :max="10"></el-input-number>
         <span> * 0.5小时</span>
         <span> 合计 {{0.5*configMeetingForm.meetingDuration}} 小时</span>
       </el-form-item>
-      <el-form-item label="会议室ID" label-width="100px">
-        <el-select v-model="roomChoice" placeholder="请选择">
+      <el-form-item label="会议室ID" label-width="110px" prop="roomID">
+        <el-select v-model="configMeetingForm.roomID" placeholder="请选择">
           <el-option v-for="item in roomInfo" :key="item.id" :label="item.id" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="会议发起人" prop="meetingHolder" label-width="100px">
-        <el-input></el-input>
+      <el-form-item label="会议发起人" prop="meetingHolder" label-width="110px">
+        <el-input v-model="configMeetingForm.meetingHolder" placeholder="请输入会议发起人姓名"></el-input>
       </el-form-item>
-      <el-form-item label="会议室申请人" prop="meetingAsker" label-width="100px">
+      <!-- <el-form-item label="会议室申请人" prop="meetingAsker" label-width="100px">
         <el-input>
         </el-input>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item>
-        <el-button class="one" type="primary" @click="submitForm('configMeetingFormRef')">修改会议</el-button>
+        <el-button class="one" type="primary" @click="submitForm">修改会议</el-button>
         <el-button class="two" type="info" @click="quit">取消</el-button>
       </el-form-item>
     </el-form>
@@ -69,60 +69,108 @@ export default {
   name: 'ConfigMeeting',
   data() {
     return {
+      // 用户先选择要修改的会议
+      // 这个地方用数组的id可能有一些问题
       userMeetings: [
         {
           meetingID: 0,
           meetingTitle: '综合设计',
           meetingDay: '2022-10-11',
-          meetingTime: '10:00'
+          meetingTime: '10:00',
+          meetingDuration: 3,
+          meetingHolder: 'Zimon',
+          roomID: '204'
         },
         {
           meetingID: 1,
           meetingTitle: '综合设计',
           meetingDay: '2022-10-11',
-          meetingTime: '10:00'
+          meetingTime: '10:00',
+          meetingDuration: 3,
+          meetingHolder: 'Zimon',
+          roomID: '204'
         },
         {
           meetingID: 2,
           meetingTitle: '综合设计',
           meetingDay: '2022-10-11',
-          meetingTime: '10:00'
+          meetingTime: '10:00',
+          meetingDuration: 3,
+          meetingHolder: 'Zimon',
+          roomID: '204'
         }
       ],
-      meetingChoice: '',
+      meetingChoiceForm: {
+        meetingChoice: ''
+      },
       meetingChoiceOn: true,
+      rulesChoice: {
+        meetingChoice: [{ required: true, message: '请选择要修改的会议', trigger: 'change' }]
+      },
       // 接下来是修改会议的部分，从configMeetingForm被加载进来的时候修改原装数据
       configMeetingForm: {
         meetingTitle: '',
         meetingDay: null,
         meetingTime: null,
         meetingDuration: 0,
-        meeingHolder: '',
-        roomAsker: '',
-        roomID: 0
+        meetingHolder: '',
+        roomID: ''
       },
       roomInfo: [
         { id: 201, occupied: false },
         { id: 202, occupied: false },
         { id: 203, occupied: false }
       ],
-      roomChoice: ''
+      rules: {
+        meetingTitle: [
+          { required: true, message: '请输入会议名称', trigger: 'blur' },
+          { min: 1, max: 15, message: '长度在1-15字之间', trigger: 'blur' }
+        ],
+        meetingDay: [{ type: 'date', required: true, message: '请选择会议日期', trigger: 'change' }],
+        meetingTime: [{ type: 'date', required: true, message: '请选择会议日期', trigger: 'change' }],
+        meetingDuration: [{ type: 'number', required: true, message: '请输入会议预计时长', trigger: 'change' }],
+        roomID: [{ required: true, message: '请选择会议室', trigger: 'change' }],
+        meetingHolder: [{ required: true, message: '请输入会议发起人姓名', trigger: 'blur' }]
+      }
     }
   },
   methods: {
     meetingChoiceDone() {
-      console.log(this.meetingChoice)
-      this.meetingChoiceOn = false
+      this.$refs.meetingChoiceFormRef.validate(valid => {
+        if (valid) {
+          console.log(this.meetingChoiceForm)
+          //这个地方要把用户选中的数据装载到configMeetingForm
+          let id = this.meetingChoiceForm.meetingChoice
+          this.configMeetingForm = this.userMeetings[id]
+          // this.configMeetingForm.meetingTitle = this.userMeetings[id].meetingTitle
+          // this.configMeetingForm.meetingDay = this.userMeetings[id].meetingDay
+          // this.configMeetingForm.meetingTime = this.userMeetings[id].meetingTime
+          // this.configMeetingForm.meetingDuration = this.userMeetings[id].meetingDuration
+          // this.configMeetingForm.meetingHolder = this.userMeetings[id].meetingHolder
+          // this.configMeetingForm.roomID = this.userMeetings[id].roomID
+          this.meetingChoiceOn = false
+        } else {
+          return this.$message.error('请先选择要修改的会议')
+        }
+      })
     },
     quit() {
-      console.log('quit')
       this.$emit('workSectionDone', false)
     },
-    submitForm(formRef) {
-      // 验证表单上传服务器
-      // this.$ref[formRef].validate(valid => {})
+    submitForm() {
+      // 验证表单
+      this.$refs.configMeetingFormRef.validate(valid => {
+        if (valid) {
+          console.log(this.configMeetingForm)
+          // 从这个地方向后端发送数据addMeetingForm内容
+
+          this.$message.success('修改成功')
+        } else {
+          return this.$message.error('修改失败，请先完善信息')
+        }
+      })
       // 发送添加会议的数据
-      this.$emit('workSectionDone', false)
+      // this.$emit('workSectionDone', false)
     }
   }
   // watch: {
