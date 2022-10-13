@@ -34,7 +34,7 @@
         <el-col :span="1"></el-col>
         <el-col :span="6">
           <el-form-item class="inner" prop="meetingTime">
-            <el-time-picker placeholder="选择时间" v-model="configMeetingForm.meetingTime" style="width: 100%;"></el-time-picker>
+            <el-time-select placeholder="选择时间" v-model="configMeetingForm.meetingTime" style="width: 100%;" :picker-options="{start: '08:30',step: '00:15',end: '21:30'}"></el-time-select>
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -72,33 +72,33 @@ export default {
       // 用户先选择要修改的会议
       // 这个地方用数组的id可能有一些问题
       userMeetings: [
-        {
-          meetingID: 0,
-          meetingTitle: '综合设计',
-          meetingDay: '2022-10-11',
-          meetingTime: '10:00',
-          meetingDuration: 3,
-          meetingHolder: 'Zimon',
-          roomID: '204'
-        },
-        {
-          meetingID: 1,
-          meetingTitle: '综合设计',
-          meetingDay: '2022-10-11',
-          meetingTime: '10:00',
-          meetingDuration: 3,
-          meetingHolder: 'Zimon',
-          roomID: '204'
-        },
-        {
-          meetingID: 2,
-          meetingTitle: '综合设计',
-          meetingDay: '2022-10-11',
-          meetingTime: '10:00',
-          meetingDuration: 3,
-          meetingHolder: 'Zimon',
-          roomID: '204'
-        }
+        // {
+        //   meetingID: 0,
+        //   meetingTitle: '综合设计',
+        //   meetingDay: '2022-10-11',
+        //   meetingTime: '10:00',
+        //   meetingDuration: 3,
+        //   meetingHolder: 'Zimon',
+        //   roomID: '204'
+        // },
+        // {
+        //   meetingID: 1,
+        //   meetingTitle: '综合设计',
+        //   meetingDay: '2022-10-11',
+        //   meetingTime: '10:00',
+        //   meetingDuration: 3,
+        //   meetingHolder: 'Zimon',
+        //   roomID: '204'
+        // },
+        // {
+        //   meetingID: 2,
+        //   meetingTitle: '综合设计',
+        //   meetingDay: '2022-10-11',
+        //   meetingTime: '10:00',
+        //   meetingDuration: 3,
+        //   meetingHolder: 'Zimon',
+        //   roomID: '204'
+        // }
       ],
       meetingChoiceForm: {
         meetingChoice: ''
@@ -126,8 +126,8 @@ export default {
           { required: true, message: '请输入会议名称', trigger: 'blur' },
           { min: 1, max: 15, message: '长度在1-15字之间', trigger: 'blur' }
         ],
-        meetingDay: [{ type: 'date', required: true, message: '请选择会议日期', trigger: 'change' }],
-        meetingTime: [{ type: 'date', required: true, message: '请选择会议日期', trigger: 'change' }],
+        meetingDay: [{ required: true, message: '请选择会议日期', trigger: 'change' }],
+        meetingTime: [{ required: true, message: '请选择会议日期', trigger: 'change' }],
         meetingDuration: [{ type: 'number', required: true, message: '请输入会议预计时长', trigger: 'change' }],
         roomID: [{ required: true, message: '请选择会议室', trigger: 'change' }],
         meetingHolder: [{ required: true, message: '请输入会议发起人姓名', trigger: 'blur' }]
@@ -163,7 +163,7 @@ export default {
         if (valid) {
           console.log(this.configMeetingForm)
           // 从这个地方向后端发送数据addMeetingForm内容
-
+          this.http.post('/addMeeting', { addMeetingForm: this.configMeetingForm })
           this.$message.success('修改成功')
         } else {
           return this.$message.error('修改失败，请先完善信息')
@@ -172,14 +172,11 @@ export default {
       // 发送添加会议的数据
       // this.$emit('workSectionDone', false)
     }
+  },
+  async created() {
+    const { data: res } = await this.http.get('/userMeetingsToConfig')
+    this.userMeetings = res
   }
-  // watch: {
-  //   meetingChoice: {
-  //     handler(newVal) {
-
-  //     }
-  //   }
-  // }
 }
 </script>
 

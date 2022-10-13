@@ -17,27 +17,27 @@ export default {
   data() {
     return {
       meetingData: [
-        {
-          meetingTitle: '综合设计',
-          meetingTimeAll: '2022-10-11 22:00',
-          meetingDuration: '3',
-          meetingHolder: 'Zimon',
-          roomID: '228'
-        },
-        {
-          meetingTitle: '综合设计',
-          meetingTimeAll: '2022-10-11 22:00',
-          meetingDuration: '3',
-          meetingHolder: 'Zimon',
-          roomID: '228'
-        },
-        {
-          meetingTitle: '综合设计',
-          meetingTimeAll: '2022-10-11 22:00',
-          meetingDuration: '3',
-          meetingHolder: 'Zimon',
-          roomID: '228'
-        }
+        // {
+        //   meetingTitle: '综合设计',
+        //   meetingTimeAll: '2022-10-11 22:00',
+        //   meetingDuration: '3',
+        //   meetingHolder: 'Zimon',
+        //   roomID: '228'
+        // },
+        // {
+        //   meetingTitle: '综合设计',
+        //   meetingTimeAll: '2022-10-11 22:00',
+        //   meetingDuration: '3',
+        //   meetingHolder: 'Zimon',
+        //   roomID: '228'
+        // },
+        // {
+        //   meetingTitle: '综合设计',
+        //   meetingTimeAll: '2022-10-11 22:00',
+        //   meetingDuration: '3',
+        //   meetingHolder: 'Zimon',
+        //   roomID: '228'
+        // }
       ]
     }
   },
@@ -45,6 +45,10 @@ export default {
     meetingDataConfirm() {
       this.$emit('workSectionDone', false)
     }
+  },
+  async created() {
+    const { data: res } = await this.http.get('/meetingRecord')
+    this.meetingData = res
   }
 }
 </script>

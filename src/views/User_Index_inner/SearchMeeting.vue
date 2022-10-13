@@ -3,7 +3,7 @@
     <el-form v-if="!searchDone" class="search-meeting" ref="searchMeetingFormRef" :model="searchMeetingForm">
       <el-form-item class="one" prop="roomID">
         <el-select v-model="searchMeetingForm.roomID" placeholder="请选择会议室ID">
-          <el-option v-for="item in room_All" :key="item.roomID" :label="item.roomID" :value="item.roomID"></el-option>
+          <el-option v-for="item in roomAll" :key="item.roomID" :label="item.roomID" :value="item.roomID"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item class="two" prop="meetingDay">
@@ -39,46 +39,54 @@ export default {
         roomID: ''
       },
       // 这个地方应该是后端返回的可供选择的会议数据
-      room_All: [{ roomID: 101 }, { roomID: 102 }, { roomID: 103 }, { roomID: 104 }],
+      // roomAll: [{ roomID: 101 }, { roomID: 102 }, { roomID: 103 }, { roomID: 104 }],\
+      roomAll: [],
       // rules: {
       //   meetingDay: [
       // 并不是必须输入会议室ID和会议日期才能搜
       //   ]
       // },
       searchDone: false,
-      // 假数据代替
       retMeetingInfo: [
-        {
-          meetingTitle: '综合设计',
-          meetingTimeAll: '2022-10-11 22:00',
-          meetingDuration: '3',
-          meetingHolder: 'Zimon',
-          roomID: '228'
-        },
-        {
-          meetingTitle: '综合设计',
-          meetingTimeAll: '2022-10-11 22:00',
-          meetingDuration: '3',
-          meetingHolder: 'Zimon',
-          roomID: '228'
-        },
-        {
-          meetingTitle: '综合设计',
-          meetingTimeAll: '2022-10-11 22:00',
-          meetingDuration: '3',
-          meetingHolder: 'Zimon',
-          roomID: '228'
-        }
+        // {
+        //   meetingTitle: '综合设计',
+        //   meetingTimeAll: '2022-10-11 22:00',
+        //   meetingDuration: '3',
+        //   meetingHolder: 'Zimon',
+        //   roomID: '228'
+        // },
+        // {
+        //   meetingTitle: '综合设计',
+        //   meetingTimeAll: '2022-10-11 22:00',
+        //   meetingDuration: '3',
+        //   meetingHolder: 'Zimon',
+        //   roomID: '228'
+        // },
+        // {
+        //   meetingTitle: '综合设计',
+        //   meetingTimeAll: '2022-10-11 22:00',
+        //   meetingDuration: '3',
+        //   meetingHolder: 'Zimon',
+        //   roomID: '228'
+        // }
       ]
     }
   },
   methods: {
-    meetingChoiceDone() {
+    async meetingChoiceDone() {
       // 用户在会议室号和会议时间必须选了一个
       if (!this.searchMeetingForm.meetingDay && !this.searchMeetingForm.roomID) {
         return this.$message.error('请至少选择一个查询条件')
       }
       // 向后端发送用户的查询条件，修改retMeetingInfo的值
+      const { data: res } = await this.http.get('/searchMeetingLimits', {
+        params: {
+          meetingDay: this.searchMeetingForm.meetingDay,
+          roomID: this.searchMeetingForm.roomID
+        }
+      })
+      this.retMeetingInfo = res
+      // 查询条件结束，关闭查询条件
       this.searchDone = true
     },
     clearAll() {
@@ -91,6 +99,10 @@ export default {
     retMeetingConfirm() {
       this.searchDone = false
     }
+  },
+  async created() {
+    const { data: res } = await this.http.get('/searchMeetingRoomList')
+    this.roomAll = res
   }
 }
 </script>

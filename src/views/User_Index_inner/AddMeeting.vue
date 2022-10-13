@@ -20,9 +20,11 @@
         <el-col :span="1"></el-col>
         <el-col :span="6">
           <el-form-item class="inner" prop="meetingTime">
-            <el-time-picker placeholder="选择时间" v-model="addMeetingForm.meetingTime" style="width: 100%;"></el-time-picker>
+            <el-time-select placeholder="选择时间" v-model="addMeetingForm.meetingTime" style="width: 100%;" :picker-options="{start: '08:30',step: '00:15',end: '21:30'}"></el-time-select>
           </el-form-item>
         </el-col>
+        <!-- <el-date-picker v-model="addMeetingForm.meetingTime" type="datetime" placeholder="请选择会议的日期时间" :picker-options="{start: '08:30',step: '00:15',end: '18:30'}">
+        </el-date-picker> -->
       </el-form-item>
       <el-form-item label="会议预计时长" label-width="110px" prop="meetingDuration">
         <el-input-number v-model="addMeetingForm.meetingDuration" :min="1" :max="10"></el-input-number>
@@ -75,8 +77,8 @@ export default {
           { required: true, message: '请输入会议名称', trigger: 'blur' },
           { min: 1, max: 15, message: '长度在1-15字之间', trigger: 'blur' }
         ],
-        meetingDay: [{ type: 'date', required: true, message: '请选择会议日期', trigger: 'change' }],
-        meetingTime: [{ type: 'date', required: true, message: '请选择会议日期', trigger: 'change' }],
+        meetingDay: [{ required: true, message: '请选择会议日期', trigger: 'change' }],
+        meetingTime: [{ required: true, message: '请选择会议日期', trigger: 'change' }],
         meetingDuration: [{ type: 'number', required: true, message: '请输入会议预计时长', trigger: 'change' }],
         roomID: [{ required: true, message: '请选择会议室', trigger: 'change' }],
         meetingHolder: [{ required: true, message: '请输入会议发起人姓名', trigger: 'blur' }]
@@ -90,7 +92,7 @@ export default {
         if (valid) {
           console.log(this.addMeetingForm)
           // 从这个地方向后端发送数据addMeetingForm内容
-
+          this.http.post('/addMeeting', { addMeetingForm: this.addMeetingForm })
           this.$message.success('添加成功')
         } else {
           return this.$message.error('添加失败，请先完善信息')

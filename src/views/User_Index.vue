@@ -61,9 +61,9 @@ export default {
     return {
       operation: '',
       meetingInfo: [
-        { id: 100, time: '2022-10-6', title: '综合设计', holder: 'Zimon' },
-        { id: 101, time: '2022-10-6', title: '综合设计', holder: 'Zimon' },
-        { id: 102, time: '2022-10-6', title: '综合设计', holder: 'Zimon' }
+        // { id: 100, time: '2022-10-6', title: '综合设计', holder: 'Zimon' },
+        // { id: 101, time: '2022-10-6', title: '综合设计', holder: 'Zimon' },
+        // { id: 102, time: '2022-10-6', title: '综合设计', holder: 'Zimon' }
       ],
       workSectionChoice: '',
       workSectionOn: false
@@ -95,6 +95,10 @@ export default {
       this.workSectionOn = e
       this.operation = ''
     }
+  },
+  async created() {
+    const { data: res } = await this.http.get('/meetingInfo')
+    this.meetingInfo = res
   }
 }
 </script>
