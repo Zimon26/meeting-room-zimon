@@ -225,7 +225,7 @@ export default {
       margin: 10px 0;
     }
     .one {
-      margin-left: 150px;
+      margin-left: 160px;
     }
     .two {
       margin-left: 20px;

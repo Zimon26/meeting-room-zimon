@@ -2,15 +2,15 @@
   <div>
     <h3>我的会议</h3>
     <div class="meeting-info">
-      <div class="meeting-card" v-for="item in meetingInfo" :key="item.id">
+      <div class="meeting-card" v-for="item in meetingInfo" :key="item.meetingID">
         <p>
-          <span class="meeting-time">{{item.time}}</span>
+          <span class="meeting-time">{{item.meetingDay}}</span>
         </p>
         <p>
-          <span class="meeting-title">主题：{{item.title}}</span>
+          <span class="meeting-title">主题：{{item.meetingTitle}}</span>
         </p>
         <p>
-          <span class="meeting-holder">会议发起人：{{item.holder}}</span>
+          <span class="meeting-holder">会议发起人：{{item.meetingHolder}}</span>
         </p>
       </div>
     </div>
@@ -59,6 +59,7 @@ export default {
   name: 'User_Index',
   data() {
     return {
+      username: 'Zimon',
       operation: '',
       meetingInfo: [
         // { id: 100, time: '2022-10-6', title: '综合设计', holder: 'Zimon' },
@@ -97,7 +98,12 @@ export default {
     }
   },
   async created() {
-    const { data: res } = await this.http.get('/meetingInfo')
+    // 上面还要先根据登录结果获取用户名
+    const { data: res } = await this.http.get('/meetingInfo', {
+      params: {
+        meetingHolder: this.username
+      }
+    })
     this.meetingInfo = res
   }
 }

@@ -16,6 +16,7 @@ export default {
   name: 'MeetingRecord',
   data() {
     return {
+      username: 'Zimon',
       meetingData: [
         // {
         //   meetingTitle: '综合设计',
@@ -44,11 +45,35 @@ export default {
   methods: {
     meetingDataConfirm() {
       this.$emit('workSectionDone', false)
+    },
+    async getData(username) {
+      const { data: res } = await this.http.get('/meetingRecord', {
+        params: {
+          meetingHolder: username
+        }
+      })
+      res.forEach(item => {
+        item.meetingTimeAll = `${item.meetingDay} ${item.meetingTime}`
+      })
+      this.meetingData = res
     }
   },
-  async created() {
-    const { data: res } = await this.http.get('/meetingRecord')
-    this.meetingData = res
+  created() {
+    // const meetingHolder = 'Zimon'
+    this.username = 'Zimon'
+    console.log('我是' + this.username)
+    this.getData(this.username)
+    // const { data: res } = await this.http.get('/meetingRecord', {
+    //   params: {
+    //     meetingHolder: this.username
+    //   }
+    // })
+    // res.forEach(item => {
+    //   item.meetingTimeAll = `${item.meetingDay} ${item.meetingTime}`
+    // })
+    // console.log('我是分隔符')
+    // console.log(res)
+    // this.meetingData = res
   }
 }
 </script>
