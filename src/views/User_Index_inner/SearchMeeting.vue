@@ -21,7 +21,7 @@
         <el-table-column label="会议时间" prop="meetingTimeAll" width="200" align="center"></el-table-column>
         <!-- <el-table-column label="会议日期" prop="meetingDay" width="100" align="center"></el-table-column>
         <el-table-column label="会议时间" prop="meetingTime" width="100" align="center"></el-table-column> -->
-        <el-table-column label="会议时长(小时)" prop="meetingDuration" width="200" align="center"></el-table-column>
+        <el-table-column label="会议时长(小时)" prop="meetingDurationHours" width="200" align="center"></el-table-column>
         <el-table-column label="会议室ID" prop="roomID" width="200" align="center"></el-table-column>
         <el-table-column label="会议发起人" prop="meetingHolder" width="200" align="center"></el-table-column>
       </el-table>
@@ -89,6 +89,7 @@ export default {
       })
       res.forEach(item => {
         item.meetingTimeAll = `${item.meetingDay} ${item.meetingTime}`
+        item.meetingDurationHours = item.meetingDuration * 0.5
       })
       this.retMeetingInfo = res
       // 查询条件结束，关闭查询条件

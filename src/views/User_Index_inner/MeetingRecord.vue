@@ -3,7 +3,7 @@
     <el-table :data="meetingData" stripe>
       <el-table-column label="会议主题" prop="meetingTitle" width="200" align="center"></el-table-column>
       <el-table-column label="会议时间" prop="meetingTimeAll" width="200" align="center"></el-table-column>
-      <el-table-column label="会议时长(小时)" prop="meetingDuration" width="200" align="center"></el-table-column>
+      <el-table-column label="会议时长(小时)" prop="meetingDurationHours" width="200" align="center"></el-table-column>
       <el-table-column label="会议室ID" prop="roomID" width="200" align="center"></el-table-column>
       <el-table-column label="会议发起人" prop="meetingHolder" width="200" align="center"></el-table-column>
     </el-table>
@@ -54,6 +54,7 @@ export default {
       })
       res.forEach(item => {
         item.meetingTimeAll = `${item.meetingDay} ${item.meetingTime}`
+        item.meetingDurationHours = item.meetingDuration * 0.5
       })
       this.meetingData = res
     }

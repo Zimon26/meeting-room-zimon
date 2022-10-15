@@ -88,18 +88,19 @@ export default {
   methods: {
     submitForm() {
       // 验证表单
-      this.$refs.addMeetingFormRef.validate(valid => {
+      this.$refs.addMeetingFormRef.validate(async valid => {
         if (valid) {
-          console.log(this.addMeetingForm)
-          // 从这个地方向后端发送数据addMeetingForm内容
-          this.http.post('/addMeeting', { addMeetingForm: this.addMeetingForm })
+          // 向后端发送数据addMeetingForm内容
+          const { data: res } = await this.http.post('/addMeeting', { addMeetingForm: this.addMeetingForm, type: 0 })
+          if (res.message === 'conflict') return this.$message.error('添加失败，与其他已预定会议冲突，请重新选择会议室或更换时间')
           this.$message.success('添加成功')
+          this.$emit('workSectionDone', false)
         } else {
           return this.$message.error('添加失败，请先完善信息')
         }
       })
-      // 发送添加会议的数据
-      // this.$emit('workSectionDone', false)
+      // 会议添加完毕
+      //
     },
     quitAddMeeting() {
       this.$emit('workSectionDone', false)
@@ -117,7 +118,7 @@ export default {
   border-radius: 5px;
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
   padding: 10px 20px;
-  background-color: burlywood;
+  background-color: #d9ecff;
   .inner {
     margin: 0 !important;
   }

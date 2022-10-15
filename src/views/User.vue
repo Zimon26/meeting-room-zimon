@@ -97,7 +97,7 @@ export default {
 }
 .user-container {
   height: 100%;
-  background-color: pink;
+  background-color: #a0cfff;
   .main-container {
     height: 100%;
     .el-header {

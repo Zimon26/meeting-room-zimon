@@ -3,7 +3,7 @@
     <el-form v-if="meetingChoiceOn" ref="meetingChoiceFormRef" class="meeting-choice" :model="meetingChoiceForm" :rules="rulesChoice">
       <el-form-item prop="meetingChoice">
         <el-select v-model="meetingChoiceForm.meetingChoice" placeholder="请选择要修改的会议">
-          <el-option v-for="item in userMeetings" :key="item.meetingID" :label="`${item.meetingTitle} ${item.meetingDay} ${item.meetingTime}`" :value="item.meetingID"></el-option>
+          <el-option v-for="item in userMeetings" :key="item.indexID" :label="`${item.meetingTitle} ${item.meetingDay} ${item.meetingTime}`" :value="item.indexID"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -131,15 +131,17 @@ export default {
         meetingDuration: [{ type: 'number', required: true, message: '请输入会议预计时长', trigger: 'change' }],
         roomID: [{ required: true, message: '请选择会议室', trigger: 'change' }],
         meetingHolder: [{ required: true, message: '请输入会议发起人姓名', trigger: 'blur' }]
-      }
+      },
+      username: 'Zimon'
     }
   },
   methods: {
     meetingChoiceDone() {
       this.$refs.meetingChoiceFormRef.validate(valid => {
         if (valid) {
-          console.log(this.meetingChoiceForm)
+          // console.log(this.meetingChoiceForm)
           //这个地方要把用户选中的数据装载到configMeetingForm
+          console.log('this is' + this.meetingChoiceForm.meetingChoice)
           let id = this.meetingChoiceForm.meetingChoice
           this.configMeetingForm = this.userMeetings[id]
           // this.configMeetingForm.meetingTitle = this.userMeetings[id].meetingTitle
@@ -159,11 +161,14 @@ export default {
     },
     submitForm() {
       // 验证表单
-      this.$refs.configMeetingFormRef.validate(valid => {
+      this.$refs.configMeetingFormRef.validate(async valid => {
         if (valid) {
           console.log(this.configMeetingForm)
           // 从这个地方向后端发送数据addMeetingForm内容
-          this.http.post('/addMeeting', { addMeetingForm: this.configMeetingForm })
+          console.log('我是分割线')
+          console.log(this.configMeetingForm)
+          const { data: res } = await this.http.post('/addMeeting', { addMeetingForm: this.configMeetingForm, type: 1 })
+          if (res.message === 'conflict') return this.$message.error('修改失败，与其他已预定会议冲突，请重新选择会议室或更换时间')
           this.$message.success('修改成功')
         } else {
           return this.$message.error('修改失败，请先完善信息')
@@ -174,8 +179,16 @@ export default {
     }
   },
   async created() {
-    const { data: res } = await this.http.get('/userMeetingsToConfig')
+    const { data: res } = await this.http.get('/meetingRecord', {
+      params: {
+        meetingHolder: this.username
+      }
+    })
+    res.forEach((item, index) => {
+      item.indexID = index
+    })
     this.userMeetings = res
+    console.log(this.userMeetings)
   }
 }
 </script>
@@ -198,7 +211,7 @@ export default {
   border-radius: 5px;
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
   padding: 10px 20px;
-  background-color: burlywood;
+  background-color: #d9ecff;
   .el-form-item {
     margin: 10px 0;
     // .separate {

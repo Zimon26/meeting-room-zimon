@@ -127,7 +127,8 @@ h3 {
     box-sizing: border-box;
     width: 250px;
     height: 250px;
-    background-color: aqua;
+    background-color: #d9ecff;
+    font-size: 16px;
     padding-left: 12px;
     border-radius: 5px;
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
@@ -148,7 +149,7 @@ h3 {
     margin-left: 25px;
     width: 200px;
     height: 200px;
-    background-color: #fff;
+    background-color: #d9ecff;
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     text-align: center;
