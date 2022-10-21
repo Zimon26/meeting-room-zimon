@@ -6,6 +6,7 @@ import AddMeeting from '@/views/User_Index_inner/AddMeeting.vue'
 import ConfigMeeting from '@/views/User_Index_inner/ConfigMeeting.vue'
 import MeetingRecord from '@/views/User_Index_inner/MeetingRecord.vue'
 import SearchMeeting from '@/views/User_Index_inner/SearchMeeting.vue'
+import UserMessage from '@/views/User_Message/User_Message.vue'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
@@ -25,6 +26,9 @@ const routes = [
           { path: 'SearchMeeting', component: SearchMeeting },
           { path: 'MeetingRecord', component: MeetingRecord },
         ]
+      },
+      {
+        path: 'message', component: UserMessage
       }
     ]
   },

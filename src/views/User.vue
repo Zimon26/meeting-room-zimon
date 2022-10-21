@@ -52,20 +52,22 @@
             <!-- <i class="el-icon-menu"></i> -->
             菜单
           </div>
-          <el-menu background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router default-active="index">
+          <el-menu background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" router
+            default-active="index">
             <el-menu-item index="index">
               <i class="el-icon-menu"></i>
               <span slot="title">首页</span>
             </el-menu-item>
             <!-- 已经设计了第二个hash地址是meetings -->
-            <el-menu-item index="meetings">
+            <el-menu-item index="message">
               <i class="el-icon-menu"></i>
-              <span slot="title">我的会议</span>
+              <span slot="title">我的消息</span>
             </el-menu-item>
           </el-menu>
         </el-aside>
         <!-- 主要内容区域 -->
         <el-main>
+          <!-- 路由展示的页面 -->
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -95,21 +97,26 @@ export default {
   // 这个解决方法并不好
   border: 0;
 }
+
 .user-container {
   height: 100%;
   background-color: #a0cfff;
+
   .main-container {
     height: 100%;
+
     .el-header {
       height: 20%;
       background-color: #605ca8;
       display: flex;
+
       .title-div {
         display: inline-block;
         position: relative;
         width: 200px;
         height: 100%;
         background-color: #555299;
+
         // text-align: center;
         .span-container {
           position: absolute;
@@ -121,26 +128,32 @@ export default {
           letter-spacing: 2px;
           color: #eee;
         }
+
         .bold {
           font-weight: 700;
         }
       }
+
       .function-bar {
         flex: 1;
         display: inline-block;
+
         // margin-left: 200px;
         .left-function-icons {
           font-size: 20px;
           color: #eee;
           transform: translate(10px, -25px);
         }
+
         .right-function-icons {
           float: right;
           margin: 18px 0;
           margin-right: 20px;
+
           .el-button {
             padding: 5px;
           }
+
           i {
             font-size: 20px;
             color: #eee;
@@ -150,11 +163,14 @@ export default {
         }
       }
     }
+
     .after-header-container {
       height: 80%;
+
       .el-aside {
         height: 100%;
         background-color: #545c64;
+
         .aside-userinfo {
           .userinfo {
             // margin: 200px auto;
@@ -220,6 +236,7 @@ export default {
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+
             // color: green !important;
             i {
               margin-right: 5px;
@@ -227,6 +244,7 @@ export default {
             }
           }
         }
+
         .menu-notice {
           height: 20px;
           line-height: 20px;
@@ -236,6 +254,7 @@ export default {
           color: rgba(200, 200, 200, 0.6);
           font-size: 14px;
         }
+
         .el-menu-item {
           border-right: 0;
         }
