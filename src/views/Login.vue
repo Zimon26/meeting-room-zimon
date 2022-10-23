@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import eventBus from '@/EventBus'
 export default {
   name: 'Login',
   data() {
@@ -58,7 +58,7 @@ export default {
       nameLabel: '用户ID',
       // 这个也是重置后的输入框值，简单起见先直接写
       loginForm: {
-        id: 'admin',
+        id: '02026',
         password: '123456'
       },
       loginFormRules: {
@@ -88,13 +88,28 @@ export default {
       //       console.log('post not fine')
       //     }
       //   )
-      this.$refs.loginFormRef.validate(valid => {
-        if (!valid) return this.$message.error('登录失败')
-        if (this.loginForm.id === 'admin' && this.loginForm.password === '123456') {
+      this.$refs.loginFormRef.validate(async valid => {
+        if (!valid) return this.$message.error('登录失败，用户名和密码不能为空')
+        const { data: res } = await this.http.get('/login', {
+          params: {
+            userID: this.loginForm.id,
+            password: this.loginForm.password
+          }
+        })
+        if (res.message === 'ok') {
           this.$message.success('登录成功')
+          // 登录成功后发送用户相关的信息到User组件
+          eventBus.$emit('loginFine', { id: this.loginForm.id })
+          if (!this.userType) this.$router.push('/user')
+          else this.$router.push('/admin')
+        } else {
+          this.$message.error('登录失败，用户名或密码错误')
+          console.log(res)
         }
-        if (!this.userType) this.$router.push('/user')
-        else this.$router.push('/admin')
+        // if (this.loginForm.id === 'admin' && this.loginForm.password === '123456') {
+
+        // }
+
       })
       // ajax传递到后台，跟后台比对密码
     }
@@ -119,19 +134,23 @@ export default {
 .login-container {
   padding-top: 12%;
 }
+
 .main_container {
   background-color: pink;
 }
+
 .head_blank {
   height: 200px;
   // background-color: pink;
 }
+
 .top_container {
   // height: 450px;
   border: 2px solid #dcdfe6;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
+
 .el-input {
   width: 80%;
 }

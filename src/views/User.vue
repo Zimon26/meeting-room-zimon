@@ -36,11 +36,11 @@
           <div class="aside-userinfo">
             <div class="userinfo">
               <div class="image-container">
-                <img src="../assets/logo.png" alt="">
+                <img :src="userAvatar" alt="">
               </div>
               <div class="user-status">
                 <div class="username">
-                  <span>Zimon</span>
+                  <span>{{username}}</span>
                 </div>
                 <div class="user-line">
                   <span><i class="el-icon-check"></i>在线</span>
@@ -67,6 +67,7 @@
         </el-aside>
         <!-- 主要内容区域 -->
         <el-main>
+          <!-- <button @click="handler">click</button> -->
           <!-- 路由展示的页面 -->
           <router-view></router-view>
         </el-main>
@@ -76,16 +77,42 @@
 </template>
 
 <script>
+import eventBus from '@/EventBus'
 export default {
   name: 'User',
   data() {
-    return {}
+    return {
+      userID: null,
+      username: '',
+      userAvatar: null,
+      userType: null
+    }
   },
   methods: {
     quitLogin() {
       // 清除token
       this.$router.replace('/login')
-    }
+    },
+    // handler() {
+    //   this.username = 'jack'
+    //   console.log('name ' + this.username)
+    // },
+  },
+  // created() {
+  // },
+  async mounted() {
+    eventBus.$on('loginFine', async (e) => {
+      this.userID = e.id
+      const { data: res } = await this.http.get('/userInfo', {
+        params: {
+          userID: this.userID
+        }
+      })
+      this.username = res.username
+      this.userAvatar = res.userAvatar
+      this.userType = res.userType
+      console.log(this.username)
+    })
   }
 }
 </script>
